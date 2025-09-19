@@ -3,12 +3,13 @@ import numpy as np
 import os
 from datetime import datetime
 
-def load_and_concatenate_participants(visiteurs_path, benevoles_path):
+def load_and_concatenate_participants(visiteurs_path, benevoles_path, sponsors_path):
     """
-    Loads participants from 'visiteurs' and 'benevoles' Excel files and concatenates them.
+    Loads participants from 'visiteurs', 'benevoles', and 'sponsors' Excel files and concatenates them.
     """
     df_visiteurs = pd.DataFrame()
     df_benevoles = pd.DataFrame()
+    df_sponsors = pd.DataFrame()
 
     try:
         df_visiteurs = pd.read_excel(visiteurs_path)
@@ -22,7 +23,13 @@ def load_and_concatenate_participants(visiteurs_path, benevoles_path):
     except FileNotFoundError:
         print(f"AVERTISSEMENT : Le fichier des bénévoles '{benevoles_path}' n'a pas été trouvé.")
 
-    df_entree = pd.concat([df_visiteurs, df_benevoles], ignore_index=True)
+    try:
+        df_sponsors = pd.read_excel(sponsors_path)
+        print(f"Fichier '{sponsors_path}' chargé avec {len(df_sponsors)} lignes.")
+    except FileNotFoundError:
+        print(f"AVERTISSEMENT : Le fichier des sponsors '{sponsors_path}' n'a pas été trouvé.")
+
+    df_entree = pd.concat([df_visiteurs, df_benevoles, df_sponsors], ignore_index=True)
     print(f"\nTotal de {len(df_entree)} participants après concaténation.")
     return df_entree
 
@@ -70,6 +77,7 @@ def main():
     
     fichier_visiteurs = os.path.join(output_dir, "event_registration_visiteurs.xlsx")
     fichier_benevoles = os.path.join(output_dir, "event_registration_benevoles.xlsx")
+    fichier_sponsors = os.path.join(output_dir, "event_registration_sponsors.xlsx")
     
     nom_fichier_gagnants = os.path.join(output_dir, "gagnants_combines.xlsx")
     
@@ -78,7 +86,7 @@ def main():
     colonne_id_ticket = "numero_ticket"
 
     # --- 2. Load and Prepare Data ---
-    df_entree = load_and_concatenate_participants(fichier_visiteurs, fichier_benevoles)
+    df_entree = load_and_concatenate_participants(fichier_visiteurs, fichier_benevoles, fichier_sponsors)
     if df_entree.empty:
         print("Aucun participant à tirer au sort. Arrêt du script.")
         return
