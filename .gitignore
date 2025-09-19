@@ -1,0 +1,36 @@
+# Fichiers de cache et bytecode Python
+__pycache__/
+*.py[cod]
+*$py.class
+
+# Fichiers de distribution et de build
+build/
+dist/
+*.egg-info/
+
+# Environnements virtuels
+.env
+.venv
+env/
+venv/
+.env_odoo/
+
+# Fichiers de log
+*.log
+logs/
+
+# Fichiers générés par les IDE
+.vscode/
+.idea/
+
+# Fichiers de données et de sortie
+input_files/
+output_files/
+*.xlsx
+*.pdf
+
+# Fichiers système (macOS)
+.DS_Store
+
+# Checkpoints de Jupyter Notebook
+.ipynb_checkpoints
